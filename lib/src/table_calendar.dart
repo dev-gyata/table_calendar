@@ -284,7 +284,7 @@ class TableCalendar<T> extends StatefulWidget {
 }
 
 class _TableCalendarState<T> extends State<TableCalendar<T>> {
-  late final PageController _pageController;
+  PageController? _pageController;
   late final ValueNotifier<DateTime> _focusedDay;
   late RangeSelectionMode _rangeSelectionMode;
   DateTime? _firstSelectedDay;
@@ -439,14 +439,14 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   }
 
   void _onLeftChevronTap() {
-    _pageController.previousPage(
+    _pageController?.previousPage(
       duration: widget.pageAnimationDuration,
       curve: widget.pageAnimationCurve,
     );
   }
 
   void _onRightChevronTap() {
-    _pageController.nextPage(
+    _pageController?.nextPage(
       duration: widget.pageAnimationDuration,
       curve: widget.pageAnimationCurve,
     );
@@ -485,15 +485,13 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           ),
         AnimatedSwitcher(
           duration: widget.baseCalendarAnimationDuration,
-          child: widget.showCalendarBase
+          child: !widget.showCalendarBase
               ? SizedBox.shrink()
               : Flexible(
                   flex: widget.shouldFillViewport ? 1 : 0,
                   child: TableCalendarBase(
                     onCalendarCreated: (pageController) {
-                      if (_pageController.hasClients) {
-                        _pageController.dispose();
-                      }
+                      _pageController?.dispose();
                       _pageController = pageController;
                       widget.onCalendarCreated?.call(pageController);
                     },
