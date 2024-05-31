@@ -491,9 +491,10 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                   flex: widget.shouldFillViewport ? 1 : 0,
                   child: TableCalendarBase(
                     onCalendarCreated: (pageController) {
-                      _pageController?.dispose();
-                      _pageController = pageController;
-                      widget.onCalendarCreated?.call(pageController);
+                      if (_pageController != null) {
+                        _pageController = pageController;
+                        widget.onCalendarCreated?.call(pageController);
+                      }
                     },
                     focusedDay: _focusedDay.value,
                     calendarFormat: widget.calendarFormat,
